@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { buttons } from "./data/buttonslist";
 import { Button } from "./components/button";
+import { users } from "./data/usersComplete";
 import "./App.css";
 
 const App = () => {
@@ -16,6 +17,11 @@ const App = () => {
           caption={caption}
           handler={onFilterSelect}
         />
+      ))}
+      {users.map(({ name: { title, first, last }, email }) => (
+        <div key={email}>
+          {title} {first} {last}
+        </div>
       ))}
     </Fragment>
   );
