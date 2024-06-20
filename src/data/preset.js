@@ -10,13 +10,13 @@ export const preset = {
     filter: ({ gender }) => gender === "female",
     sorter: () => 0,
   },
-  "By name": {
+  By_name: {
     title: "By name",
     filter: () => true,
     sorter: ({ name: { last: lastA } }, { name: { last: lastB } }) =>
       lastA.localeCompare(lastB),
   },
-  "By age": {
+  By_age: {
     title: "By age",
     filter: () => true,
     sorter: ({ dob: { age: ageA } }, { dob: { age: ageB } }) => ageA - ageB,

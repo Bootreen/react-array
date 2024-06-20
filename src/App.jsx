@@ -7,13 +7,14 @@ import "./App.css";
 const App = () => {
   const [active, setActive] = useState(preset["All"].title);
   const onFilterSelect = (active) => setActive(active);
+  const titleToKey = (title) => title.replaceAll(" ", "_");
 
   return (
     <Fragment>
       <div className='container buttonsGroup'>
-        {Object.values(preset).map(({ title }) => (
+        {Object.entries(preset).map(([key, { title }]) => (
           <Button
-            key={title}
+            key={key}
             active={active}
             caption={title}
             handler={onFilterSelect}
@@ -22,8 +23,8 @@ const App = () => {
       </div>
       <div className='container list'>
         {users
-          .filter(preset[active].filter)
-          .toSorted(preset[active].sorter)
+          .filter(preset[titleToKey(active)].filter)
+          .toSorted(preset[titleToKey(active)].sorter)
           .map(({ name: { title, first, last }, dob: { age }, email }) => (
             <div className='listRow' key={email}>
               {title} {first} {last}, age: {age}
