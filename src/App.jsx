@@ -1,28 +1,31 @@
 import { Fragment, useState } from "react";
-import { buttons } from "./data/buttonslist";
+import { preset } from "./data/preset";
 import { Button } from "./components/button";
 import { users } from "./data/usersComplete";
 import "./App.css";
 
 const App = () => {
-  const [filter, setFilter] = useState("");
-  const onFilterSelect = (filter) => setFilter(filter);
+  const [active, setActive] = useState(preset["All"].title);
+  const onFilterSelect = (active) => setActive(active);
 
   return (
     <Fragment>
-      {buttons.map((caption) => (
+      {Object.values(preset).map(({ title }) => (
         <Button
-          key={caption}
-          active={filter}
-          caption={caption}
+          key={title}
+          active={active}
+          caption={title}
           handler={onFilterSelect}
         />
       ))}
-      {users.map(({ name: { title, first, last }, email }) => (
-        <div key={email}>
-          {title} {first} {last}
-        </div>
-      ))}
+      {users
+        .filter(preset[active].filter)
+        .toSorted(preset[active].sorter)
+        .map(({ name: { title, first, last }, dob: { age }, email }) => (
+          <div key={email}>
+            {title} {first} {last}, age: {age}
+          </div>
+        ))}
     </Fragment>
   );
 };
