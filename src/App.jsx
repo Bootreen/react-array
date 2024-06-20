@@ -18,31 +18,44 @@ const App = () => {
           isOn: !state[titleToKey(title)].isOn,
         },
       }));
-    if (state[titleToKey(title)].type === "radio") {
+    if (state[titleToKey(title)].type === "radio")
       Object.values(state).forEach(({ group, title: curTitle }) => {
-        if (group === state[titleToKey(title)].group && curTitle === title) {
+        if (group === state[titleToKey(title)].group)
           setState((state) => ({
             ...state,
             [titleToKey(curTitle)]: {
               ...state[titleToKey(curTitle)],
-              isOn: true,
+              isOn: curTitle === title ? true : false,
             },
           }));
-        } else if (
-          group === state[titleToKey(title)].group &&
-          curTitle !== title
-        ) {
-          setState((state) => ({
-            ...state,
-            [titleToKey(curTitle)]: {
-              ...state[titleToKey(curTitle)],
-              isOn: false,
-            },
-          }));
-        }
       });
-    }
   };
+
+  // Gather all active filters and sorters
+  const filters = () =>
+    Object.values(state)
+      .filter(({ isOn, alg_type }) => isOn && alg_type === "filter")
+      .map(({ algorythm }) => algorythm);
+
+  const sorters = () =>
+    Object.values(state)
+      .filter(({ isOn, alg_type }) => isOn && alg_type === "sort")
+      .map(({ algorythm }) => algorythm);
+
+  // Using recursion for .filter and .sort chaining
+  const chainFilter = (data, filters, index = 0) =>
+    filters.length === 0
+      ? data
+      : index === filters.length - 1
+      ? data.filter(filters[index])
+      : chainFilter(data.filter(filters[index]), filters, index + 1);
+
+  const chainSorter = (data, sorters, index = 0) =>
+    sorters.length === 0
+      ? data
+      : index === sorters.length - 1
+      ? data.toSorted(sorters[index])
+      : chainSorter(data.toSorted(sorters[index]), sorters, index + 1);
 
   return (
     <Fragment>
@@ -57,14 +70,13 @@ const App = () => {
         ))}
       </div>
       <div className='container list'>
-        {users
-          // .filter(preset[titleToKey(active)].filter)
-          // .toSorted(preset[titleToKey(active)].sorter)
-          .map(({ name: { title, first, last }, dob: { age }, email }) => (
+        {chainSorter(chainFilter(users, filters()), sorters()).map(
+          ({ name: { title, first, last }, dob: { age }, email }) => (
             <div className='listRow' key={email}>
               {title} {first} {last}, age: {age}
             </div>
-          ))}
+          )
+        )}
       </div>
     </Fragment>
   );
