@@ -1,24 +1,43 @@
 export const preset = {
-  All: { title: "All", filter: () => true, sorter: () => 0 },
+  All: {
+    title: "All",
+    type: "radio",
+    isOn: true,
+    group: 1,
+    alg_type: "filter",
+    algorythm: () => true,
+  },
   Man: {
     title: "Man",
-    filter: ({ gender }) => gender === "male",
-    sorter: () => 0,
+    type: "radio",
+    isOn: false,
+    group: 1,
+    alg_type: "filter",
+    algorythm: ({ gender }) => gender === "male",
   },
   Woman: {
     title: "Woman",
-    filter: ({ gender }) => gender === "female",
-    sorter: () => 0,
+    type: "radio",
+    isOn: false,
+    group: 1,
+    alg_type: "filter",
+    algorythm: ({ gender }) => gender === "female",
   },
   By_name: {
     title: "By name",
-    filter: () => true,
-    sorter: ({ name: { last: lastA } }, { name: { last: lastB } }) =>
+    type: "checkbox",
+    isOn: false,
+    group: 2,
+    alg_type: "sort",
+    algorythm: ({ name: { last: lastA } }, { name: { last: lastB } }) =>
       lastA.localeCompare(lastB),
   },
   By_age: {
     title: "By age",
-    filter: () => true,
-    sorter: ({ dob: { age: ageA } }, { dob: { age: ageB } }) => ageA - ageB,
+    type: "checkbox",
+    isOn: false,
+    group: 2,
+    alg_type: "sort",
+    algorythm: ({ dob: { age: ageA } }, { dob: { age: ageB } }) => ageA - ageB,
   },
 };
