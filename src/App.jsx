@@ -10,22 +10,26 @@ const App = () => {
 
   return (
     <Fragment>
-      {Object.values(preset).map(({ title }) => (
-        <Button
-          key={title}
-          active={active}
-          caption={title}
-          handler={onFilterSelect}
-        />
-      ))}
-      {users
-        .filter(preset[active].filter)
-        .toSorted(preset[active].sorter)
-        .map(({ name: { title, first, last }, dob: { age }, email }) => (
-          <div key={email}>
-            {title} {first} {last}, age: {age}
-          </div>
+      <div className='container buttonsGroup'>
+        {Object.values(preset).map(({ title }) => (
+          <Button
+            key={title}
+            active={active}
+            caption={title}
+            handler={onFilterSelect}
+          />
         ))}
+      </div>
+      <div className='container list'>
+        {users
+          .filter(preset[active].filter)
+          .toSorted(preset[active].sorter)
+          .map(({ name: { title, first, last }, dob: { age }, email }) => (
+            <div className='listRow' key={email}>
+              {title} {first} {last}, age: {age}
+            </div>
+          ))}
+      </div>
     </Fragment>
   );
 };
