@@ -1,1 +1,34 @@
-/* Add your CSS here  */
+.container {
+  width: 100%;
+  display: flex;
+}
+
+.buttonsGroup {
+  margin: 1rem 0;
+  flex-direction: row;
+  place-content: center;
+}
+
+.list {
+  margin-top: 1rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listRow {
+  margin-top: 0.25rem;
+  font-size: 1.4rem;
+}
+
+button {
+  width: 8rem;
+  height: 2rem;
+  margin: 0 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+}
+
+.selected {
+  background-color: DarkSeaGreen;
+}
