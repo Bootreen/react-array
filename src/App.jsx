@@ -6,29 +6,59 @@ import "./App.css";
 
 const App = () => {
   const [state, setState] = useState(preset);
-  const titleToKey = (title) => title.replaceAll(" ", "_");
-  const onFilterSelect = (title) => {
+  const onFilterSelect = (key) => {
     // Updating nested objects via useState is a fucking brainmelting hell
     // That's why we need state management libraries
-    if (state[titleToKey(title)].type === "checkbox")
+    if (state[key].type === "checkbox")
       setState((state) => ({
         ...state,
-        [titleToKey(title)]: {
-          ...state[titleToKey(title)],
-          isOn: !state[titleToKey(title)].isOn,
+        [key]: {
+          ...state[key],
+          isOn: !state[key].isOn,
         },
       }));
-    if (state[titleToKey(title)].type === "radio")
-      Object.values(state).forEach(({ group, title: curTitle }) => {
-        if (group === state[titleToKey(title)].group)
+    if (state[key].type === "radio")
+      Object.entries(state).forEach(([currKey, { group }]) => {
+        if (group === state[key].group)
           setState((state) => ({
             ...state,
-            [titleToKey(curTitle)]: {
-              ...state[titleToKey(curTitle)],
-              isOn: curTitle === title ? true : false,
+            [currKey]: {
+              ...state[currKey],
+              isOn: currKey === key ? true : false,
             },
           }));
       });
+  };
+
+  const counterHandler = (increment, target) => {
+    if (increment && state[target].counter.current < state[target].counter.max)
+      setState((state) => ({
+        ...state,
+        [target]: {
+          ...state[target],
+          counter: {
+            ...state[target].counter,
+            current: state[target].counter.current + 1,
+          },
+        },
+      }));
+    if (!increment && state[target].counter.current > 0)
+      setState((state) => ({
+        ...state,
+        [target]: {
+          ...state[target],
+          counter: {
+            ...state[target].counter,
+            current: state[target].counter.current - 1,
+          },
+        },
+      }));
+    // It's necessary to update original preset object as well,
+    // because counter algorythms relies on current counter
+    // value from preset. It's a bit "krutchy" solution, so this is
+    // the time to introduce some proper state management library
+    // and revise preset data structure.
+    preset[target].counter.current = state[target].counter.current;
   };
 
   // Gather all active filters and sorters
@@ -60,14 +90,32 @@ const App = () => {
   return (
     <Fragment>
       <div className='container buttonsGroup'>
-        {Object.entries(state).map(([key, { title, isOn }]) => (
-          <Button
-            key={key}
-            status={isOn ? "selected" : "inactive"}
-            title={title}
-            handler={onFilterSelect}
-          />
-        ))}
+        {Object.entries(state).map(
+          ([key, { title, isOn, isCounter, counter: { current } = {} }]) =>
+            isCounter ? (
+              <div className='counterBlock' key={key}>
+                <Button
+                  status={isOn ? "selected" : "inactive"}
+                  title={title + " " + current}
+                  handler={onFilterSelect}
+                  handlerKey={key}
+                />
+                <div className='counter'>
+                  <button onClick={() => counterHandler(true, key)}>▲</button>
+                  <button onClick={() => counterHandler(false, key)}>▼</button>
+                </div>
+              </div>
+            ) : (
+              <div key={key}>
+                <Button
+                  status={isOn ? "selected" : "inactive"}
+                  title={title}
+                  handler={onFilterSelect}
+                  handlerKey={key}
+                />
+              </div>
+            )
+        )}
       </div>
       <div className='container list'>
         {chainSorter(chainFilter(users, filters()), sorters()).map(

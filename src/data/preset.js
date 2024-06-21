@@ -40,4 +40,14 @@ export const preset = {
     alg_type: "sort",
     algorythm: ({ dob: { age: ageA } }, { dob: { age: ageB } }) => ageA - ageB,
   },
+  Older_than: {
+    title: "Older than",
+    type: "checkbox",
+    isCounter: true,
+    counter: { min: 0, max: 100, current: 40 },
+    isOn: false,
+    group: 2,
+    alg_type: "filter",
+    algorythm: ({ dob: { age } }) => age > preset.Older_than.counter.current,
+  },
 };
