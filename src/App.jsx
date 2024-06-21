@@ -6,7 +6,6 @@ import "./App.css";
 
 const App = () => {
   const [state, setState] = useState(preset);
-  // const titleToKey = (title) => title.replaceAll(" ", "_");
   const onFilterSelect = (key) => {
     // Updating nested objects via useState is a fucking brainmelting hell
     // That's why we need state management libraries
