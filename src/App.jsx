@@ -1,74 +1,77 @@
-import { Fragment, useState } from "react";
-import { preset } from "./data/preset";
+import { Fragment } from "react";
+import { usePreset, usePresetActions } from "./store/preset";
 import { Button } from "./components/button";
 import { users } from "./data/usersComplete";
 import "./App.css";
 
 const App = () => {
-  const [state, setState] = useState(preset);
-  const onFilterSelect = (key) => {
-    // Updating nested objects via useState is a fucking brainmelting hell
-    // That's why we need state management libraries
-    if (state[key].type === "checkbox")
-      setState((state) => ({
-        ...state,
-        [key]: {
-          ...state[key],
-          isOn: !state[key].isOn,
-        },
-      }));
-    if (state[key].type === "radio")
-      Object.entries(state).forEach(([currKey, { group }]) => {
-        if (group === state[key].group)
-          setState((state) => ({
-            ...state,
-            [currKey]: {
-              ...state[currKey],
-              isOn: currKey === key ? true : false,
-            },
-          }));
-      });
-  };
+  // const [state, setState] = useState(preset);
+  const { onFilterSelect, onCounterChange } = usePresetActions();
+  const activeState = usePreset((state) => state.preset);
+
+  // const onFilterSelect = (key) => {
+  // Updating nested objects via useState is a fucking brainmelting hell
+  // That's why we need state management libraries
+  //   if (state[key].type === "checkbox")
+  //     setState((state) => ({
+  //       ...state,
+  //       [key]: {
+  //         ...state[key],
+  //         isOn: !state[key].isOn,
+  //       },
+  //     }));
+  //   if (state[key].type === "radio")
+  //     Object.entries(state).forEach(([currKey, { group }]) => {
+  //       if (group === state[key].group)
+  //         setState((state) => ({
+  //           ...state,
+  //           [currKey]: {
+  //             ...state[currKey],
+  //             isOn: currKey === key ? true : false,
+  //           },
+  //         }));
+  //     });
+  // };
 
   const counterHandler = (increment, target) => {
-    if (increment && state[target].counter.current < state[target].counter.max)
-      setState((state) => ({
-        ...state,
-        [target]: {
-          ...state[target],
-          counter: {
-            ...state[target].counter,
-            current: state[target].counter.current + 1,
-          },
-        },
-      }));
-    if (!increment && state[target].counter.current > 0)
-      setState((state) => ({
-        ...state,
-        [target]: {
-          ...state[target],
-          counter: {
-            ...state[target].counter,
-            current: state[target].counter.current - 1,
-          },
-        },
-      }));
+    // if (increment && state[target].counter.current < state[target].counter.max)
+    //   setState((state) => ({
+    //     ...state,
+    //     [target]: {
+    //       ...state[target],
+    //       counter: {
+    //         ...state[target].counter,
+    //         current: state[target].counter.current + 1,
+    //       },
+    //     },
+    //   }));
+    // if (!increment && state[target].counter.current > 0)
+    //   setState((state) => ({
+    //     ...state,
+    //     [target]: {
+    //       ...state[target],
+    //       counter: {
+    //         ...state[target].counter,
+    //         current: state[target].counter.current - 1,
+    //       },
+    //     },
+    //   }));
     // It's necessary to update original preset object as well,
     // because counter algorythms relies on current counter
     // value from preset. It's a bit "krutchy" solution, so this is
     // the time to introduce some proper state management library
     // and revise preset data structure.
-    preset[target].counter.current = state[target].counter.current;
+    // preset[target].counter.current = state[target].counter.current;
   };
 
   // Gather all active filters and sorters
   const filters = () =>
-    Object.values(state)
+    Object.values(activeState)
       .filter(({ isOn, alg_type }) => isOn && alg_type === "filter")
       .map(({ algorythm }) => algorythm);
 
   const sorters = () =>
-    Object.values(state)
+    Object.values(activeState)
       .filter(({ isOn, alg_type }) => isOn && alg_type === "sort")
       .map(({ algorythm }) => algorythm);
 
@@ -90,7 +93,7 @@ const App = () => {
   return (
     <Fragment>
       <div className='container buttonsGroup'>
-        {Object.entries(state).map(
+        {Object.entries(activeState).map(
           ([key, { title, isOn, isCounter, counter: { current } = {} }]) =>
             isCounter ? (
               <div className='counterBlock' key={key}>
