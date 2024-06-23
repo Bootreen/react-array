@@ -30,16 +30,16 @@ export const UserList = () => {
             email,
           }) => (
             <tr className='list-row' key={email}>
-              <td>{title}</td>
+              <td className='text-right'>{title}</td>
               <td>{first}</td>
               <td>{last}</td>
               {gender === "male" ? (
-                <td className='male'>{"\u2642"}</td>
+                <td className='text-center male'>{"\u2642"}</td>
               ) : (
-                <td className='female'>{"\u2640"}</td>
+                <td className='text-center female'>{"\u2640"}</td>
               )}
 
-              <td>{age}</td>
+              <td className='text-center'>{age}</td>
               <td>{country}</td>
               <td>{city}</td>
             </tr>
