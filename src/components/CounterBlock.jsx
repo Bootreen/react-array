@@ -13,7 +13,7 @@ export const CounterBlock = ({
     <Button
       name={isOn ? "control selected" : "control"}
       title={title + " " + current}
-      handler={() => filterHandler(id)}
+      handler={filterHandler}
     />
     <Counter handler={counterHandler} id={id} />
   </div>
