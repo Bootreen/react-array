@@ -8,14 +8,44 @@ export const UserList = () => {
   // it should rerender every time filter/sorter state changes
   usePreset((state) => state);
   return (
-    <div className='flex list'>
-      {chainSorter(chainFilter(users, filters()), sorters()).map(
-        ({ name: { title, first, last }, dob: { age }, email }) => (
-          <div className='list-row' key={email}>
-            {title} {first} {last}, age: {age}
-          </div>
-        )
-      )}
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Country</th>
+          <th>City</th>
+        </tr>
+      </thead>
+      <tbody>
+        {chainSorter(chainFilter(users, filters()), sorters()).map(
+          ({
+            gender,
+            name: { title, first, last },
+            location: { city, country },
+            dob: { age },
+            email,
+          }) => (
+            <tr className='list-row' key={email}>
+              <td className='text-right'>{title}</td>
+              <td>{first}</td>
+              <td>{last}</td>
+              {gender === "male" ? (
+                <td className='text-center male'>{"\u2642"}</td>
+              ) : (
+                <td className='text-center female'>{"\u2640"}</td>
+              )}
+
+              <td className='text-center'>{age}</td>
+              <td>{country}</td>
+              <td>{city}</td>
+            </tr>
+          )
+        )}
+      </tbody>
+    </table>
   );
 };
