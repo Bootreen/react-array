@@ -17,7 +17,7 @@ export const FiltersMenu = () => {
                 isOn={isOn}
                 title={title}
                 current={current}
-                filterHandler={onFilterSelect}
+                filterHandler={() => onFilterSelect(id)}
                 counterHandler={onCounterChange}
               />
             ) : (

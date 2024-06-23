@@ -57,6 +57,16 @@ export const usePreset = create(
       // Provided by Zustand state management library
       algorythm: ({ dob: { age } }) => age > get().Older_than.counter.current,
     },
+    Younger_than: {
+      title: "Younger than",
+      type: "checkbox",
+      isCounter: true,
+      counter: { min: 50, max: 100, current: 60 },
+      isOn: false,
+      group: 2,
+      alg_type: "filter",
+      algorythm: ({ dob: { age } }) => age < get().Younger_than.counter.current,
+    },
 
     actions: {
       // Switch filters
