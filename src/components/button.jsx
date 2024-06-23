@@ -1,6 +1,6 @@
-export const Button = ({ title, status, handler, handlerId }) => {
+export const Button = ({ title, name, handler }) => {
   return (
-    <button className={"control " + status} onClick={() => handler(handlerId)}>
+    <button className={name} onClick={handler}>
       {title}
     </button>
   );
