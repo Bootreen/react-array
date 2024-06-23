@@ -3,7 +3,7 @@
   display: flex;
 }
 
-.buttonsGroup {
+.buttons-group {
   margin: 1rem 0;
   flex-direction: row;
   place-content: center;
@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-.listRow {
+.list-row {
   margin-top: 0.25rem;
   font-size: 1.4rem;
 }
@@ -29,12 +29,12 @@
   border-radius: 0.5rem;
 }
 
-.counterBlock {
+.counter-block {
   display: flex;
   flex-direction: row;
 }
 
-.counterBlock > button {
+.counter-block > button {
   margin-right: 0.025rem;
 }
 

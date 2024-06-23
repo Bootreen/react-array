@@ -28,12 +28,12 @@ const App = () => {
 
   return (
     <Fragment>
-      <div className='container buttonsGroup'>
+      <div className='container buttons-group'>
         {Object.entries(activeState).map(
           ([id, { title, isOn, isCounter, counter: { current } = {} }]) => {
             if (id !== "actions")
               return isCounter ? (
-                <div className='counterBlock' key={id}>
+                <div className='counter-block' key={id}>
                   <Button
                     status={isOn ? "selected" : "inactive"}
                     title={title + " " + current}
@@ -63,7 +63,7 @@ const App = () => {
       <div className='container list'>
         {chainSorter(chainFilter(users, filters()), sorters()).map(
           ({ name: { title, first, last }, dob: { age }, email }) => (
-            <div className='listRow' key={email}>
+            <div className='list-row' key={email}>
               {title} {first} {last}, age: {age}
             </div>
           )
