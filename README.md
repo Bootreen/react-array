@@ -6,12 +6,11 @@
 
 - Advanced state management via [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction) library and [Immer](https://immerjs.github.io/immer/); central state store used with subscription to store state and methods inside components that need it
   ```js
-  const { onFilterSelect, onCounterChange, filters, sorters } =
-    usePresetActions();
+  const { onFilterSelect, onCounterChange } = usePresetActions();
   const activeState = usePreset((state) => state);
   ```
-- Flexible filters/sorters implementation via `preset` object
-- New filter or sorter can be added just by adding new sub-object to preset without modifying rest of the code
+- Flexible filters and sorters implementation via `preset` object
+- New filter can be added just by adding new sub-object to preset without modifying rest of the code
   ```js
   Older_than: {
     title: "Older than",
@@ -20,11 +19,11 @@
     counter: { min: 0, max: 100, current: 40 },
     isOn: false,
     group: 2,
-    alg_type: "filter",
-    algorythm: ({ dob: { age } }) => age > get().Older_than.counter.current,
+    filter: ({ dob: { age } }) => age > get().Older_than.counter.current,
   }
   ```
-- Button behaviour that represent filters and sorters are controled by `group` and `type` parameters
+- Sorting binded to table column headers and visualized by arrow symbols
+- Button behaviour that represent filters are controled by `group` and `type` parameters
 - [Immer middleware](https://docs.pmnd.rs/zustand/integrations/immer-middleware) allows simple nested object state updates without spreading nested objects
   ```js
   // Setting boolean object property on 2nd nesting level

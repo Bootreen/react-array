@@ -1,9 +1,10 @@
+import { usePreset, usePresetActions } from "../store/preset";
 import { users } from "../data/usersComplete";
 import { chainFilter, chainSorter } from "../utils/chaining";
-import { usePreset, usePresetActions } from "../store/preset";
+import { ColumnHeader } from "./ColumnHeader";
 
 export const UserList = () => {
-  const { filters, sorters } = usePresetActions();
+  const { onSortClick, filters, sorters } = usePresetActions();
   // UserList must be subscribed to usePreset because
   // it should rerender every time filter/sorter state changes
   usePreset((state) => state);
@@ -11,13 +12,13 @@ export const UserList = () => {
     <table>
       <thead>
         <tr>
-          <th>Title</th>
-          <th>First name</th>
-          <th>Last name</th>
-          <th>Gender</th>
-          <th>Age</th>
-          <th>Country</th>
-          <th>City</th>
+          <ColumnHeader id='title' title='Title' handler={onSortClick} />
+          <ColumnHeader id='first' title='First name' handler={onSortClick} />
+          <ColumnHeader id='last' title='Last name' handler={onSortClick} />
+          <ColumnHeader id='gender' title='Gender' handler={onSortClick} />
+          <ColumnHeader id='age' title='Age' handler={onSortClick} />
+          <ColumnHeader id='country' title='Country' handler={onSortClick} />
+          <ColumnHeader id='city' title='City' handler={onSortClick} />
         </tr>
       </thead>
       <tbody>
@@ -38,7 +39,6 @@ export const UserList = () => {
               ) : (
                 <td className='text-center female'>{"\u2640"}</td>
               )}
-
               <td className='text-center'>{age}</td>
               <td>{country}</td>
               <td>{city}</td>

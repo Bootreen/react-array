@@ -7,16 +7,16 @@ export const FiltersMenu = () => {
   const activeState = usePreset((state) => state);
   return (
     <div className='flex buttons-group'>
-      {Object.entries(activeState).map(
-        ([id, { title, isOn, isCounter, counter: { current } = {} }]) => {
+      {Object.entries(activeState.btns).map(
+        ([id, { title, isOn, isCnt, cnt: { curr } = {} }]) => {
           if (id !== "actions")
-            return isCounter ? (
+            return isCnt ? (
               <CounterBlock
                 key={id}
                 id={id}
                 isOn={isOn}
                 title={title}
-                current={current}
+                current={curr}
                 filterHandler={() => onFilterSelect(id)}
                 counterHandler={onCounterChange}
               />
