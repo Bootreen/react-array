@@ -49,7 +49,7 @@ export const usePreset = create(
       title: "Older than",
       type: "checkbox",
       isCounter: true,
-      counter: { min: 0, max: 100, current: 40 },
+      counter: { min: 18, max: 100, current: 40 },
       isOn: false,
       group: 2,
       alg_type: "filter",
@@ -61,7 +61,7 @@ export const usePreset = create(
       title: "Younger than",
       type: "checkbox",
       isCounter: true,
-      counter: { min: 50, max: 100, current: 60 },
+      counter: { min: 18, max: 100, current: 60 },
       isOn: false,
       group: 2,
       alg_type: "filter",
@@ -96,7 +96,7 @@ export const usePreset = create(
           set((state) => {
             ++state[id].counter.current;
           });
-        if (!inc && get()[id].counter.current > 0)
+        if (!inc && get()[id].counter.current > get()[id].counter.min)
           set((state) => {
             --state[id].counter.current;
           });
