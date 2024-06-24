@@ -154,7 +154,7 @@ export const usePreset = create(
       },
 
       // Increment/decrement cnt if it doesn't break the max/min limits
-      oncntChange: (inc, id) => {
+      onCounterChange: (inc, id) => {
         if (inc && get().btns[id].cnt.curr < get().btns[id].cnt.max)
           set((state) => {
             ++state.btns[id].cnt.curr;
