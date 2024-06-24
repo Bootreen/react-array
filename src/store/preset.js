@@ -9,42 +9,73 @@ export const usePreset = create(
         type: "radio",
         isOn: true,
         group: 1,
-        alg_type: "filter",
-        algorythm: () => true,
+        filter: () => true,
       },
       Man: {
         title: "Man",
         type: "radio",
         isOn: false,
         group: 1,
-        alg_type: "filter",
-        algorythm: ({ gender }) => gender === "male",
+        filter: ({ gender }) => gender === "male",
       },
       Woman: {
         title: "Woman",
         type: "radio",
         isOn: false,
         group: 1,
-        alg_type: "filter",
-        algorythm: ({ gender }) => gender === "female",
+        filter: ({ gender }) => gender === "female",
       },
-      By_name: {
-        title: "By name",
-        type: "checkbox",
+      All_countries: {
+        title: "All countries",
+        type: "radio",
+        isOn: true,
+        group: 2,
+        filter: () => true,
+      },
+      Europe: {
+        title: "Europe",
+        type: "radio",
         isOn: false,
         group: 2,
-        alg_type: "sort",
-        algorythm: ({ name: { last: lastA } }, { name: { last: lastB } }) =>
-          lastA.localeCompare(lastB),
+        filter: ({ location: { country } }) =>
+          [
+            "Denmark",
+            "Finland",
+            "Norway",
+            "France",
+            "Germany",
+            "Netherlands",
+            "Serbia",
+            "Spain",
+            "Switzerland",
+            "Ukraine",
+            "United Kingdom",
+            "Ireland",
+          ].includes(country),
       },
-      By_age: {
-        title: "By age",
-        type: "checkbox",
+      Asia_and_Middle_East: {
+        title: "Asia and Middle East",
+        type: "radio",
         isOn: false,
         group: 2,
-        alg_type: "sort",
-        algorythm: ({ dob: { age: ageA } }, { dob: { age: ageB } }) =>
-          ageA - ageB,
+        filter: ({ location: { country } }) =>
+          ["India", "Iran", "Turkey"].includes(country),
+      },
+      North_and_South_America: {
+        title: "North and South America",
+        type: "radio",
+        isOn: false,
+        group: 2,
+        filter: ({ location: { country } }) =>
+          ["United States", "Canada", "Brazil"].includes(country),
+      },
+      Australia_and_Oceania: {
+        title: "Australia and Oceania",
+        type: "radio",
+        isOn: false,
+        group: 2,
+        filter: ({ location: { country } }) =>
+          ["Australia", "New Zealand"].includes(country),
       },
       Older_than: {
         title: "Older than",
@@ -52,11 +83,10 @@ export const usePreset = create(
         isCnt: true,
         cnt: { min: 18, max: 100, curr: 40 },
         isOn: false,
-        group: 2,
-        alg_type: "filter",
+        group: 3,
         // This reference to the same object inside itself is impossible in vanilla JS/React
         // Provided by Zustand state management library
-        algorythm: ({ dob: { age } }) => age > get().btns.Older_than.cnt.curr,
+        filter: ({ dob: { age } }) => age > get().btns.Older_than.cnt.curr,
       },
       Younger_than: {
         title: "Younger than",
@@ -64,9 +94,8 @@ export const usePreset = create(
         isCnt: true,
         cnt: { min: 18, max: 100, curr: 60 },
         isOn: false,
-        group: 2,
-        alg_type: "filter",
-        algorythm: ({ dob: { age } }) => age < get().btns.Younger_than.cnt.curr,
+        group: 3,
+        filter: ({ dob: { age } }) => age < get().btns.Younger_than.cnt.curr,
       },
     },
 
@@ -139,8 +168,8 @@ export const usePreset = create(
       // Gather all active filters and sorters
       filters: () =>
         Object.values(get().btns)
-          .filter(({ isOn, alg_type }) => isOn && alg_type === "filter")
-          .map(({ algorythm }) => algorythm),
+          .filter(({ isOn }) => isOn)
+          .map(({ filter }) => filter),
 
       sorters: () =>
         Object.values(get().sorters).map(({ direction, target, isNumber }) => {
