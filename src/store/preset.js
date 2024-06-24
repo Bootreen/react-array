@@ -4,8 +4,8 @@ import { immer } from "zustand/middleware/immer";
 export const usePreset = create(
   immer((set, get) => ({
     btns: {
-      All: {
-        title: "All",
+      All_users: {
+        title: "All users",
         type: "radio",
         isOn: true,
         group: 1,
@@ -70,7 +70,32 @@ export const usePreset = create(
       },
     },
 
+    sorters: {
+      title: { direction: "unsorted", target: "name.title", isNumber: false },
+      first: { direction: "unsorted", target: "name.first", isNumber: false },
+      last: { direction: "unsorted", target: "name.last", isNumber: false },
+      gender: { direction: "unsorted", target: "gender", isNumber: false },
+      age: { direction: "unsorted", target: "dob.age", isNumber: true },
+      country: {
+        direction: "unsorted",
+        target: "location.country",
+        isNumber: false,
+      },
+      city: { direction: "unsorted", target: "location.city", isNumber: false },
+    },
+
     actions: {
+      onSortClick: (id) => {
+        set((state) => {
+          state.sorters[id].direction =
+            state.sorters[id].direction === "ascending"
+              ? "descending"
+              : state.sorters[id].direction === "descending"
+              ? "unsorted"
+              : "ascending";
+        });
+      },
+
       // Switch filters
       onFilterSelect: (id) => {
         // Checkbox-type filters switch independently
@@ -111,9 +136,38 @@ export const usePreset = create(
           .map(({ algorythm }) => algorythm),
 
       sorters: () =>
-        Object.values(get().btns)
-          .filter(({ isOn, alg_type }) => isOn && alg_type === "sort")
-          .map(({ algorythm }) => algorythm),
+        Object.values(get().sorters).map(({ direction, target, isNumber }) => {
+          if (direction === "unsorted") {
+            // nothing to sort
+            return () => 0;
+          } else if (target.includes(".")) {
+            // if this is nested property, destructure it
+            // to parent and child
+            const [parent, child] = target.split(".");
+            // square brackets is used to write object key
+            // as variable
+            return (
+              { [parent]: { [child]: a } },
+              { [parent]: { [child]: b } }
+            ) =>
+              direction === "ascending"
+                ? isNumber
+                  ? a - b
+                  : a.localeCompare(b)
+                : isNumber
+                ? b - a
+                : b.localeCompare(a);
+          } else {
+            return ({ [target]: a }, { [target]: b }) =>
+              direction === "ascending"
+                ? isNumber
+                  ? a - b
+                  : a.localeCompare(b)
+                : isNumber
+                ? b - a
+                : b.localeCompare(a);
+          }
+        }),
     },
   }))
 );

@@ -1,9 +1,10 @@
 import { usePreset, usePresetActions } from "../store/preset";
 import { users } from "../data/usersComplete";
 import { chainFilter, chainSorter } from "../utils/chaining";
+import { ColumnHeader } from "./ColumnHeader";
 
 export const UserList = () => {
-  const { filters, sorters } = usePresetActions();
+  const { onSortClick, filters, sorters } = usePresetActions();
   // UserList must be subscribed to usePreset because
   // it should rerender every time filter/sorter state changes
   usePreset((state) => state);
@@ -11,48 +12,13 @@ export const UserList = () => {
     <table>
       <thead>
         <tr>
-          <th>
-            <div className='flex th-container'>
-              <span className='th-title'>Title</span>
-              <span className='direction'>{"\u2195"}</span>
-            </div>
-          </th>
-          <th>
-            <div className='flex th-container'>
-              <span className='th-title'>First name</span>
-              <span className='direction'>{"\u2195"}</span>
-            </div>
-          </th>
-          <th>
-            <div className='flex th-container'>
-              <span className='th-title'>Last name</span>
-              <span className='direction'>{"\u2195"}</span>
-            </div>
-          </th>
-          <th>
-            <div className='flex th-container'>
-              <span className='th-title'>Gender</span>
-              <span className='direction'>{"\u2195"}</span>
-            </div>
-          </th>
-          <th>
-            <div className='flex th-container'>
-              <span className='th-title'>Age</span>
-              <span className='direction'>{"\u2195"}</span>
-            </div>
-          </th>
-          <th>
-            <div className='flex th-container'>
-              <span className='th-title'>Country</span>
-              <span className='direction'>{"\u2195"}</span>
-            </div>
-          </th>
-          <th>
-            <div className='flex th-container'>
-              <span className='th-title'>City</span>
-              <span className='direction'>{"\u2195"}</span>
-            </div>
-          </th>
+          <ColumnHeader id='title' title='Title' handler={onSortClick} />
+          <ColumnHeader id='first' title='First name' handler={onSortClick} />
+          <ColumnHeader id='last' title='Last name' handler={onSortClick} />
+          <ColumnHeader id='gender' title='Gender' handler={onSortClick} />
+          <ColumnHeader id='age' title='Age' handler={onSortClick} />
+          <ColumnHeader id='country' title='Country' handler={onSortClick} />
+          <ColumnHeader id='city' title='City' handler={onSortClick} />
         </tr>
       </thead>
       <tbody>
