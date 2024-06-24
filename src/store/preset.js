@@ -86,6 +86,13 @@ export const usePreset = create(
 
     actions: {
       onSortClick: (id) => {
+        // reset other sorters
+        Object.keys(get().sorters).forEach((key) => {
+          if (key !== id)
+            set((state) => {
+              state.sorters[key].direction = "unsorted";
+            });
+        });
         set((state) => {
           state.sorters[id].direction =
             state.sorters[id].direction === "ascending"
