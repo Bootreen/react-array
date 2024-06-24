@@ -11,13 +11,48 @@ export const UserList = () => {
     <table>
       <thead>
         <tr>
-          <th>Title</th>
-          <th>First name</th>
-          <th>Last name</th>
-          <th>Gender</th>
-          <th>Age</th>
-          <th>Country</th>
-          <th>City</th>
+          <th>
+            <div className='flex th-container'>
+              <span className='th-title'>Title</span>
+              <span className='direction'>{"\u2195"}</span>
+            </div>
+          </th>
+          <th>
+            <div className='flex th-container'>
+              <span className='th-title'>First name</span>
+              <span className='direction'>{"\u2195"}</span>
+            </div>
+          </th>
+          <th>
+            <div className='flex th-container'>
+              <span className='th-title'>Last name</span>
+              <span className='direction'>{"\u2195"}</span>
+            </div>
+          </th>
+          <th>
+            <div className='flex th-container'>
+              <span className='th-title'>Gender</span>
+              <span className='direction'>{"\u2195"}</span>
+            </div>
+          </th>
+          <th>
+            <div className='flex th-container'>
+              <span className='th-title'>Age</span>
+              <span className='direction'>{"\u2195"}</span>
+            </div>
+          </th>
+          <th>
+            <div className='flex th-container'>
+              <span className='th-title'>Country</span>
+              <span className='direction'>{"\u2195"}</span>
+            </div>
+          </th>
+          <th>
+            <div className='flex th-container'>
+              <span className='th-title'>City</span>
+              <span className='direction'>{"\u2195"}</span>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
