@@ -60,6 +60,7 @@ th {
   background-color: LightSteelBlue;
   padding: 0.5rem 0 0.5rem 1rem;
   text-align: center;
+  user-select: none;
 }
 
 th:hover {
