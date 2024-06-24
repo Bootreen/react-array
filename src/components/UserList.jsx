@@ -1,6 +1,6 @@
+import { usePreset, usePresetActions } from "../store/preset";
 import { users } from "../data/usersComplete";
 import { chainFilter, chainSorter } from "../utils/chaining";
-import { usePreset, usePresetActions } from "../store/preset";
 
 export const UserList = () => {
   const { filters, sorters } = usePresetActions();
@@ -38,7 +38,6 @@ export const UserList = () => {
               ) : (
                 <td className='text-center female'>{"\u2640"}</td>
               )}
-
               <td className='text-center'>{age}</td>
               <td>{country}</td>
               <td>{city}</td>
